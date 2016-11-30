@@ -1,1 +1,1 @@
-This repository contains a number of projects I'm working on, on my quest to master Ruby. The projects are from The Odin Project's curriculum. Check The Odin Project out at: http://www.theodinproject.com
+This repository contains a number of projects I'm working on, on my quest to master Ruby. The projects are from The Odin Project's curriculum. Check The Odin Project out at: http://www.theodinproject.com.
