@@ -1,3 +1,4 @@
+#!/usr/bin/ruby
 def substrings (word, dictionary)
   valid_substrings = {}
   words= word.split(" ")
