@@ -5,6 +5,7 @@ class Game
         @game_array = [[0, 0, 0], [0, 0, 0], [0, 0, 0]]
         @number_of_turns = 0
         puts "**This game is a classic commandline version of Tic-Tac-Toe. It matches human players against each other. You have to input coordinates of your X's or O's in the format \"R,C\"(without the quotes) where R and C represent two integers greater than 0 and less than 4. Remember, always enter row to the right and column to the left. The game randomly selects either player1 or player2 for the first turn. Have fun. Or not.**"
+        display
     end
 
     def play
