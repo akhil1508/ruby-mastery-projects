@@ -1,16 +1,16 @@
-dictionary = File.open('dictionary.txt', 'r').readlines
-def generate_eligible_words_array(dictionary)
-    eligible_words = dictionary.select do |word|
+DICTIONARY = File.open('dictionary.txt', 'r').readlines
+def generate_eligible_words_array()
+    eligible_words = DICTIONARY.select do |word|
         word = word.split(' ').join('')
         word.length >= 5 && word.length <= 12
     end
     eligible_words
 end
 
-def play(dictionary)
+def play()
     already_entered = []
-    random_word_array = generate_random_word_array(generate_eligible_words_array(dictionary))
-    chances = random_word_array.length
+    random_word_array = generate_random_word_array(generate_eligible_words_array)
+    chances = random_word_array.length * 2
     current_state = []
     length = random_word_array.length
     length.times do
@@ -22,31 +22,51 @@ def play(dictionary)
         puts current_state.join(' ')
         puts
         puts 'Enter letter:'
-        letter = gets.chomp
+        letter = gets.chomp.downcase
         if letter.length > 1
             puts 'Enter a single letter and a single letter only:'
-            letter = gets.chomp
+            letter = gets.chomp.downcase
         end
-        if !already_entered.include? letter
-            already_entered.push(letter)
+        checked = check(already_entered, letter)
+        if checked
+          already_entered = checked
         else
+          while !check(already_entered, letter)
             puts"Enter a letter you haven't entered before"
-            letter = gets.chomp
+            letter = gets.chomp.downcase
+          end
         end
 
         random_word_array.each_with_index do |current_letter, index_of_current_letter|
-            if current_letter.casecmp(letter.downcase).zero?
+          current_letter = current_letter.downcase
+            if current_letter.casecmp(letter).zero?
                 current_state[index_of_current_letter] = letter
             end
         end
         unless current_state.join('').match('_')
             puts "Well done. You've won. Wanna play again?"
-            exit
+            if gets.chomp.upcase == 'Y'
+              play
+            else
+              exit
+            end
         end
         chances -= 1
+        if chances == 0
+          puts answer(random_word_array)
+          puts "You've lost. Wanna play again(Y/N)?"
+          if gets.chomp.upcase == 'Y'
+            play
+          else
+            exit
+          end
+        end
     end
 end
 
+def answer(random_word_array)
+  random_word_array.join('')
+end
 def generate_random_word_array(eligible_words)
     length = eligible_words.length
     random_number = rand(0..length)
@@ -54,15 +74,13 @@ def generate_random_word_array(eligible_words)
     2.times { array.pop }
     array
  end
-puts 'Ready to play (Y/N)'
-if gets.chomp.casecmp('Y').zero?
-    play(dictionary)
-else
-    exit
-end
-puts 'You\'ve lost. Wanna play again?(Y/N)'
-if gets.chomp.casecmp('Y').zero?
-    play(dictionary)
-else
-    exit
-end
+
+ def check already_entered, letter
+   if !already_entered.include? letter
+       already_entered << letter
+       return already_entered
+     else
+       return false
+     end
+ end
+play
